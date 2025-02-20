@@ -1,6 +1,7 @@
+LD_LIBRARY_PATH=$(shell export LD_LIBRARY_PATH=/home/jovyan/lib:$LD_LIBRARY_PATH; echo $$LD_LIBRARY_PATH)
+
 CC = gcc
 CFLAGS = -Wall -I/home/jovyan/include -L/home/jovyan/lib  -lcjson
-LD_LIBRARY_PATH := /home/jovyan/lib:$LD_LIBRARY_PATH
 
 default: all clean
 
