@@ -3,24 +3,42 @@
         {
             "name": "shape 1",
             "x": [
-                -4.045084971874736,
-                1.5450849718747373,
-                5.0,
-                1.5450849718747361,
-                -4.045084971874738
+                -20.0,
+                20.0,
+                20.0,
+                -20.0
             ],
             "y": [
-                2.9389262614623664,
-                4.755282581475767,
-                0.0,
-                -4.755282581475768,
-                -2.938926261462365
+                -20.0,
+                -20.0,
+                20.0,
+                20.0
             ],
-            "magnetic_inclination": 0.0,
-            "magnetic_declination": 0.0,
+            "magnetic_inclination": 45.0,
+            "magnetic_declination": 120.0,
             "magnetic_intensity": 1.0,
             "top": 10.0,
-            "bottom": 15.0
+            "bottom": 20.0
+        },
+        {
+            "name": "shape 2",
+            "x": [
+                -40.0,
+                40.0,
+                40.0,
+                -40.0
+            ],
+            "y": [
+                -40.0,
+                -40.0,
+                40.0,
+                40.0
+            ],
+            "magnetic_inclination": 0.0,
+            "magnetic_declination": 90.0,
+            "magnetic_intensity": 5.0,
+            "top": 20.0,
+            "bottom": 30.0
         }
     ]
 }

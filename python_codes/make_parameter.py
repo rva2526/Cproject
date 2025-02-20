@@ -1,27 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import json
-
-def sort_points_clockwise(coordinates):
-    """Sort the points in clockwise order based on the centroid."""
-    
-    # Find the centroid (center of mass)
-    centroid_x = np.mean([point[0] for point in coordinates])
-    centroid_y = np.mean([point[1] for point in coordinates])
-    
-    # Calculate the angle for each point relative to the centroid
-    angles = []
-    for point in coordinates:
-        angle = np.arctan2(point[1] - centroid_y, point[0] - centroid_x)
-        angles.append(angle)
-    
-    # Sort the points based on the angle
-    sorted_coordinates = [point for _, point in sorted(zip(angles, coordinates))]
-    
-    # Reverse the order for clockwise (if counterclockwise by default)
-    sorted_coordinates.reverse()
-    
-    return sorted_coordinates
+import os
 
 def generate_coordinates(vertices_number:int, width:int|float, height:int|float, center_x:int=0, center_y:int=0) -> list[float]:
     """Generate coordinates for a polygon with user-defined parameters."""
@@ -48,9 +28,6 @@ def generate_coordinates(vertices_number:int, width:int|float, height:int|float,
             (center_x + (half_width * np.cos(angle)), center_y + (half_height * np.sin(angle)))
             for angle in angles
         ]
-    
-    # Sort coordinates in clockwise order
-    coordinates = sort_points_clockwise(coordinates)
     
     return coordinates
 
@@ -84,10 +61,10 @@ def plot_shapes_together(all_shapes: list):
     plt.ylim(-50, 50)
     
     # Save and show the figure
-    plt.savefig("all_shapes.png")
+    plt.savefig("./plots/all_shapes.png")
     # plt.show()
 
-def save_json(all_shapes, filename="shape_data.json"):
+def save_json(all_shapes, filename="./data/shape_data.json"):
     """Save the coordinates of multiple shapes to a JSON file."""
     json_data = {"shapes": all_shapes}
     
@@ -126,7 +103,6 @@ def main():
         
         # Generate shape coordinates
         coordinates = generate_coordinates(vertices_number, width, height, center_x, center_y)
-        
         # Add the coordinates and parameters to the all_shapes list
         shape_data = {
             'name': f"shape {i + 1}",
