@@ -31,7 +31,7 @@ def generate_coordinates(vertices_number:int, width:int|float, height:int|float,
     
     return coordinates
 
-def plot_shapes_together(all_shapes: list):
+def plot_shapes_together(all_shapes: list, savefile="./plots/all_shapes.png"):
     """Plot all shapes together on a single figure."""
     
     plt.figure(figsize=(6, 6))
@@ -61,7 +61,9 @@ def plot_shapes_together(all_shapes: list):
     plt.ylim(-50, 50)
     
     # Save and show the figure
-    plt.savefig("./plots/all_shapes.png")
+    plt.savefig(savefile)
+    print('plot saved to: {}\n'.format(savefile))
+
     # plt.show()
 
 def save_json(all_shapes, filename="./data/shape_data.json"):
@@ -74,6 +76,8 @@ def save_json(all_shapes, filename="./data/shape_data.json"):
     # Writing to a JSON file
     with open(filename, "w") as outfile:
         outfile.write(json_object)
+
+    print('json saved to: {}\n'.format(outfile.name))
 
 def main():
     print("Welcome to the Multiple Shape Generator!")
@@ -100,6 +104,7 @@ def main():
         magnetic_intensity = float(input("Enter the magnetic intensity (): "))
         top = float(input("Enter the top value (meters from surface, down is positive): "))
         bottom = float(input("Enter the bottom value (meters from surface, down is positive): "))
+        print('\n')
         
         # Generate shape coordinates
         coordinates = generate_coordinates(vertices_number, width, height, center_x, center_y)
@@ -122,7 +127,7 @@ def main():
     # Save all shapes data to JSON
     save_json(all_shapes)
     
-    print(f"\n{num_shapes} shapes generated, plotted, and saved to 'shape_data.json'.")
+    print(f"\n{num_shapes} shapes generated, plotted, and saved.")
 
 if __name__ == "__main__":
     main()

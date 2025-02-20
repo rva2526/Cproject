@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#variables
 COMPILED_FILE=test2
 
 echo ''
@@ -7,9 +8,14 @@ echo ''
 echo 'Running Plouf based magnetics code'
 echo ''
 
+#need this in the environment for running the C code
+export LD_LIBRARY_PATH=/home/jovyan/lib:$LD_LIBRARY_PATH
+
+
+#looking to see if you need to make a simple shape file 
 read -t 60 -p "Do you want to create a simple shape? (y/n) " response
 
-if [[ $response == [yY] ]]; then
+if [[ $response == [yY] ]]; then # yes you do so run the python code for makeing simple shapes
 
     echo "Creating..."
     echo ''
@@ -21,29 +27,43 @@ if [[ $response == [yY] ]]; then
     echo ''
 
 
-elif [[ $response == [nN] ]]; then
+elif [[ $response == [nN] ]]; then # no you have your own shape file
 
-    echo "You chose no."
-    echo ''
-    echo ''
+    #  adding file path
+    read -t 60 -p "Filepath to shapefile json: " shape_path
 
-else
-    echo "Invalid input."
-    echo ''
-    echo ''
+    if [ -f "$shape_path" ]; then #checking that the file exits
+        
+        echo $shape_path 'exists'
+        echo ''
+        echo ''
 
-fi
-
-if [ -f "$COMPILED_FILE" ]; then
-
-    echo "$COMPILED_FILE exists."
-
-else
-
-    echo "$COMPILED_FILE does not exist."
-    echo ''
-    echo 'Running make'
-    export LD_LIBRARY_PATH=/home/jovyan/lib:$LD_LIBRARY_PATH
-    make
+    else #exiting if invaled
+        echo $shape_path 'does not exist, exiting...'
+        exit 1
+    fi
+ 
+else #exiting if invaled
+    echo "Invalid input, exiting..."
+    exit 1
 
 fi
+
+
+
+
+
+
+
+# if [ -f "$COMPILED_FILE" ]; then
+
+#     echo "$COMPILED_FILE exists."
+
+# else
+
+#     echo "$COMPILED_FILE does not exist."
+#     echo ''
+#     echo 'Running make'
+#     make
+
+# fi
