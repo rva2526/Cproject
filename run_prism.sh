@@ -1,5 +1,4 @@
 #!/bin/bash
-export LD_LIBRARY_PATH=/home/jovyan/lib:$LD_LIBRARY_PATH
 
 COMPILED_FILE=test2
 
@@ -44,6 +43,7 @@ else
     echo "$COMPILED_FILE does not exist."
     echo ''
     echo 'Running make'
+    export LD_LIBRARY_PATH=/home/jovyan/lib:$LD_LIBRARY_PATH
     make
 
 fi
