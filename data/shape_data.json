@@ -3,19 +3,19 @@
         {
             "name": "shape 1",
             "x": [
-                -20.0,
-                20.0,
-                20.0,
-                -20.0
+                -25.0,
+                25.0,
+                25.0,
+                -25.0
             ],
             "y": [
-                -20.0,
-                -20.0,
-                20.0,
-                20.0
+                -10.0,
+                -10.0,
+                10.0,
+                10.0
             ],
             "magnetic_inclination": 45.0,
-            "magnetic_declination": 120.0,
+            "magnetic_declination": 0.0,
             "magnetic_intensity": 1.0,
             "top": 10.0,
             "bottom": 20.0
@@ -23,22 +23,22 @@
         {
             "name": "shape 2",
             "x": [
-                -40.0,
-                40.0,
-                40.0,
-                -40.0
+                25.0,
+                75.0,
+                75.0,
+                25.0
             ],
             "y": [
-                -40.0,
-                -40.0,
-                40.0,
-                40.0
+                25.0,
+                25.0,
+                75.0,
+                75.0
             ],
-            "magnetic_inclination": 0.0,
-            "magnetic_declination": 90.0,
-            "magnetic_intensity": 5.0,
-            "top": 20.0,
-            "bottom": 30.0
+            "magnetic_inclination": 45.0,
+            "magnetic_declination": 0.0,
+            "magnetic_intensity": 1.0,
+            "top": 10.0,
+            "bottom": 20.0
         }
     ]
 }
