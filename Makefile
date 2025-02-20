@@ -1,14 +1,15 @@
-LD_LIBRARY_PATH=$(shell export LD_LIBRARY_PATH=/home/jovyan/lib:$LD_LIBRARY_PATH; echo $$LD_LIBRARY_PATH)
 
 CC = gcc
 CFLAGS = -Wall -I/home/jovyan/include -L/home/jovyan/lib  -lcjson
+COMPILED = plouf
+
 
 default: all clean
 
-all: test2
+all: $(COMPILED)
 
-test2: ./src/main.o ./src/read_parse.o
-	$(CC) ./src/main.o ./src/read_parse.o -o test2 $(CFLAGS)
+$(COMPILED): ./src/main.o ./src/read_parse.o
+	$(CC) ./src/main.o ./src/read_parse.o -o $(COMPILED) $(CFLAGS)
 
 main.o: ./src/main.c ./src/read_parse.h
 	$(CC) -c ./src/main.c -o ./src/main.o $(CFLAGS)

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #variables
-COMPILED_FILE=test2
+COMPILED_FILE=plouf # DO NOT CHANGE
+shape_path
 
 echo ''
 echo ''
@@ -11,6 +12,8 @@ echo ''
 #need this in the environment for running the C code
 export LD_LIBRARY_PATH=/home/jovyan/lib:$LD_LIBRARY_PATH
 
+
+#SHAPEFILE CODE 
 
 #looking to see if you need to make a simple shape file 
 read -t 60 -p "Do you want to create a simple shape? (y/n) " response
@@ -51,19 +54,26 @@ fi
 
 
 
+#MAKE CODE
 
+if [ -f "$COMPILED_FILE" ]; then
 
+    echo "$COMPILED_FILE exists."
+    echo 'Usage: ' $COMPILED_FILE '<shape_json> <observed_txt>'
 
+else
 
-# if [ -f "$COMPILED_FILE" ]; then
+    echo "$COMPILED_FILE does not exist."
+    echo ''
+    echo 'Running make...'
+    echo ''
+    echo ''
 
-#     echo "$COMPILED_FILE exists."
+    make
 
-# else
+    echo ''
+    echo 'code compiled as ' $COMPILED_FILE
+    echo 'Usage: ' $COMPILED_FILE '<shape_json> <observed_txt>'
+    echo ''
 
-#     echo "$COMPILED_FILE does not exist."
-#     echo ''
-#     echo 'Running make'
-#     make
-
-# fi
+fi
