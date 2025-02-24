@@ -8,7 +8,7 @@ char *read_file(const char *filename) {
         return NULL;
     }
 
-    printf("Reading file...\n");
+    printf("Reading file...%s\n",filename);
 
     char buffer[BUFFER_SIZE];
     char *content = malloc(1);

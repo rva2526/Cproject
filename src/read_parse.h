@@ -23,8 +23,16 @@ struct Prism {
     double mdec;       // Declination of magnetization
 };
 
+
+// Define the observed points data structure
+struct ObservedMag {
+    double east;      // easting of observation point
+    double north;     // northing of observation point
+    double mag;       // magnetic value (nT) at observation point)
+};
+
 char *read_file(const char *filename);
-struct Prism* read_json(const char *prism_content, int *num_prisms);
+struct Prism *read_json(const char *prism_content, int *num_prisms);
 double calculateSignedArea(struct Prism *prism);
 void ensureClockwise(struct Prism *prism);
 
