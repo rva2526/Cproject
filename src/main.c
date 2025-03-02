@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "read_parse.h"
 
+
+
+
+
 int main(int argc, char *argv[]){
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <observed_file> <prism_json_file>\n", argv[0]);
@@ -11,6 +15,7 @@ int main(int argc, char *argv[]){
     char *obsfile_name = argv[1];
     char *prismfile_name = argv[2];
 
+    //DOING PRISM STUFF
     char *prism_content = read_file(prismfile_name);
 
     if (prism_content != NULL) {
@@ -53,44 +58,16 @@ int main(int argc, char *argv[]){
         printf("Failed to read the file\n");
     }
 
-
-
-int read_obs(const char *filename){
-    FILE *obsfile = fopen(obsfile_name, "r");
-    if (obsfile == NULL) {
-        fprintf(stderr, "Error opening file: %s\n", obsfile_name);
-        return 1;
-    }
-
-
-    // Determine the number of rows (num_obs) in the observed points data file - this is the number of data points for calcs
-    int num_obs = 0;
-    char obsline[256];
-    while (fgets(obsline, sizeof(obsline), obsfile)) {
-        num_obs++;
-    }
-    fseek(obsfile, 0, SEEK_SET);
+    //DOING OBS STUFF
     
-    // Allocate memory for the array of obs points 
-    struct ObservedMag *obsmag = (struct ObservedMag*)malloc(num_obs * sizeof(struct ObservedMag));
+    int num_obs;
+    struct ObservedMag *obsmag = read_observed_data(obsfile_name, &num_obs);
+
     if (obsmag == NULL) {
-        fprintf(stderr, "Memory allocation failed in building observed data structure - do you have no observed data?\n");
-        fclose(obsfile);
         return 1;
     }
 
-    for (int i = 0; i < num_obs; i++) {
-        
-        struct ObservedMag *currentObs = &obsmag[i];
-        
-        fscanf(obsfile, "%lf %lf %lf ", &currentObs->east, &currentObs->north,
-               &currentObs->mag);
-    }
-    
-    // Close the file
-    fclose(obsfile);
-    return 0;
-}
+
 
 
     return 0;

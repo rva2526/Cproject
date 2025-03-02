@@ -3,22 +3,22 @@
         {
             "name": "shape 1",
             "x": [
-                -2.0,
-                2.0,
-                2.0,
-                -2.0
+                -10.0,
+                10.0,
+                10.0,
+                -10.0
             ],
             "y": [
-                -5.0,
-                -5.0,
-                5.0,
-                5.0
+                -10.0,
+                -10.0,
+                10.0,
+                10.0
             ],
-            "magnetic_inclination": 10.0,
-            "magnetic_declination": 100.0,
-            "magnetic_intensity": 10.0,
-            "top": 20.0,
-            "bottom": 40.0
+            "magnetic_inclination": 45.0,
+            "magnetic_declination": 0.0,
+            "magnetic_intensity": 1.0,
+            "top": 10.0,
+            "bottom": 20.0
         }
     ]
 }

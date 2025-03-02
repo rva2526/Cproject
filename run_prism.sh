@@ -2,7 +2,7 @@
 
 #variables
 COMPILED_FILE=plouf # DO NOT CHANGE
-shape_path
+# shape_path
 
 echo ''
 echo ''

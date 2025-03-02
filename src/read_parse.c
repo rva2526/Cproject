@@ -137,3 +137,63 @@ void ensureClockwise(struct Prism *prism) {
         }
     }
 }
+
+struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
+    FILE *obsfile = fopen(filename, "r");
+    if (obsfile == NULL) {
+        fprintf(stderr, "Error opening file: %s\n", filename);
+        return NULL;
+    }
+
+    printf("\nReading file...%s\n", filename);
+
+    // Determine the number of valid rows (num_obs)
+    *num_obs = 0;
+    char obsline[256];
+
+    double prev_n = -9999.000;  // Initialize previous north value to a very low number
+    double curr_n;
+
+    while (fgets(obsline, sizeof(obsline), obsfile)) {
+        double east, north, obs_mag;
+        if (sscanf(obsline, "%lf %lf %lf", &east, &north, &obs_mag) == 3) {
+            curr_n = north;  // Assign current north value
+
+            // Compare the current and previous north values
+            if (curr_n < prev_n) {
+                printf("Problem: Current north value is less than the previous one. Previous: %lf, Current: %lf\n", prev_n, curr_n);
+                exit(1);  // Exit if there's a problem
+            }
+
+            prev_n = curr_n;  // Update prev_n to the current value
+            // printf("%lf %lf %lf\n", east, north, obs_mag);
+            (*num_obs)++;
+        }
+    }
+    fseek(obsfile, 0, SEEK_SET);  // Reset file pointer
+
+
+    // Allocate memory for the array of obs points
+    struct ObservedMag *obsmag = (struct ObservedMag *)malloc(*num_obs * sizeof(struct ObservedMag));
+    if (obsmag == NULL) {
+        fprintf(stderr, "Memory allocation failed in building observed data structure.\n");
+        fclose(obsfile);
+        return NULL;
+    }
+
+    char prev_line[256] = "";
+    char curr_line[256];
+    int obs_index = 0;
+
+    while (fgets(curr_line, sizeof(curr_line), obsfile)) {
+        if (sscanf(curr_line, "%lf %lf %lf", &obsmag[obs_index].east, &obsmag[obs_index].north, &obsmag[obs_index].obs_mag) == 3) {
+            obsmag[obs_index].calc_mag = 0; // Initialize calc_mag to 0
+            obs_index++;
+            strcpy(prev_line, curr_line);
+        }
+    }
+
+    printf("Reading success!\n");
+    fclose(obsfile);
+    return obsmag;
+}
