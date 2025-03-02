@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "read_parse.h"
-
-
-
-
+#include "forward_inversion.h"
 
 int main(int argc, char *argv[]){
     if (argc != 3) {
@@ -14,6 +11,15 @@ int main(int argc, char *argv[]){
 
     char *obsfile_name = argv[1];
     char *prismfile_name = argv[2];
+
+    //DOING OBS STUFF
+    int num_obs;
+    struct ObservedMag *obsmag = read_observed_data(obsfile_name, &num_obs);
+
+    if (obsmag == NULL) {
+        return 1;
+    }
+
 
     //DOING PRISM STUFF
     char *prism_content = read_file(prismfile_name);
@@ -50,6 +56,22 @@ int main(int argc, char *argv[]){
                 }
             }
 
+
+        double px, py, anomaly;
+        for (int j=0; j<num_obs; j++) {
+            
+            py = obsmag[j].east;
+            px = obsmag[j].north;
+            anomaly = 0;
+        for(int i = 0; i<num_prisms; i++){
+                struct Prism currentPrism = prisms[i];
+                anomaly += calculateVolumeIntegral(&currentPrism, px, py);
+            }
+                obsmag[j].calc_mag=anomaly;
+                // printf("%lf %lf %lf\n", py, px, anomaly);
+        
+            }
+
         } else {
             printf("No prisms found.\n");
         }
@@ -58,17 +80,14 @@ int main(int argc, char *argv[]){
         printf("Failed to read the file\n");
     }
 
-    //DOING OBS STUFF
-    
-    int num_obs;
-    struct ObservedMag *obsmag = read_observed_data(obsfile_name, &num_obs);
-
-    if (obsmag == NULL) {
-        return 1;
+    for (int j=0; j<num_obs; j++) {
+        printf("%lf %lf %lf %lf\n", 
+        obsmag[j].east, 
+        obsmag[j].north, 
+        obsmag[j].obs_mag,
+        obsmag[j].calc_mag);
     }
-
-
-
+ 
 
     return 0;
 }
