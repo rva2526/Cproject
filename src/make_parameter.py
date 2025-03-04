@@ -3,25 +3,24 @@ import matplotlib.pyplot as plt
 import json
 import os
 import pandas as pd
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, Point
 
 
-def center_shape(df: pd.DataFrame) -> None:
-    coords = list(map(tuple, np.asarray(df)))
-    poly = Polygon(coords)
-    center = poly.centroid
+def center(center: Point, df: pd.DataFrame) -> None:
 
     df['E_centered'] = df.Easting - center.x
     df['N_centered'] = df.Northing - center.y
     print(df.head())
 
-def plot_line_and_polygon(shape: pd.DataFrame) -> None:
-    fig, ax = plt.subplots()
-    # ax.plot(model.line.Easting,model.line.Northing,color='red',markersize=3,label='Cleaned Observed Data')
+def plot_line_and_polygon(shape: pd.DataFrame, points: pd.DataFrame = None) -> None:
+    fig, ax = plt.subplots(figsize=(5,7))
+    if points is not None:
+        ax.plot(points.E_centered,points.N_centered,color='red',markersize=3,label='Observed Data')
+        
     ax.plot(shape.E_centered,shape.N_centered,linestyle='dashed',color='black',label='Magnetic Body')
     ax.scatter(shape.E_centered,shape.N_centered,color='blue',label='Verticies')
     ax.scatter(0,0,color='black',marker='*',s=50)
-    ax.legend()
+    ax.legend(loc='upper right')
     plt.savefig('./shape.png')
 
 def generate_coordinates(vertices_number:int, width:int|float, height:int|float, center_x:int=0, center_y:int=0) -> list[float]:
@@ -161,40 +160,50 @@ def main():
         df = pd.read_csv('data/shape_data/anom_a_cone_1.csv',skiprows=1,usecols=[0,1],sep='[\\s,]',names=['Easting','Northing'],engine='python')
         print('\nFile head: \n',df.head())
 
-        center_shape(df)
-        plot_line_and_polygon(shape=df)
+
+        coords = list(map(tuple, np.asarray(df)))
+        poly = Polygon(coords)
+        centroid = poly.centroid
+        center(centroid,df)
+        
+        pts = pd.read_csv("/home/jovyan/Cproject/data/shape_data/points_anom_a_cone_1.csv",usecols=[0,1,2],header=0,sep='[\\s,]',names=['Easting','Northing','Mag'],engine='python')
+        print(pts.head())
+
+        center(centroid,pts)
+
+        plot_line_and_polygon(shape=df,points=pts)
         print("\nShape centered and plotted")
 
         vertices_number = df.index.max()+1
 
-        print("\nGenerate the rest of the paramaters needed: \n")
-        magnetic_inclination = float(input("Enter the magnetic inclination (degrees): "))
-        magnetic_declination = float(input("Enter the magnetic declination (degrees): "))
-        magnetic_intensity = float(input("Enter the magnetic intensity (amps/m): "))
-        top = float(input("Enter the top value (meters from surface, down is positive): "))
-        bottom = float(input("Enter the bottom value (meters from surface, down is positive): "))
-        print('\n')
+        # print("\nGenerate the rest of the paramaters needed: \n")
+        # magnetic_inclination = float(input("Enter the magnetic inclination (degrees): "))
+        # magnetic_declination = float(input("Enter the magnetic declination (degrees): "))
+        # magnetic_intensity = float(input("Enter the magnetic intensity (amps/m): "))
+        # top = float(input("Enter the top value (meters from surface, down is positive): "))
+        # bottom = float(input("Enter the bottom value (meters from surface, down is positive): "))
+        # print('\n')
 
-        all_shapes = []  # List to hold all shape data
+        # all_shapes = []  # List to hold all shape data
 
-        #assuming single shape
-        shape_data = {
-            'name': f"shape 1",
-            'x': df.E_centered.to_list(),
-            'y': df.N_centered.to_list(),
-            'magnetic_inclination': magnetic_inclination,
-            'magnetic_declination': magnetic_declination,
-            'magnetic_intensity': magnetic_intensity,
-            'top': top,
-            'bottom': bottom
-        }
+        # #assuming single shape
+        # shape_data = {
+        #     'name': f"shape 1",
+        #     'x': df.E_centered.to_list(),
+        #     'y': df.N_centered.to_list(),
+        #     'magnetic_inclination': magnetic_inclination,
+        #     'magnetic_declination': magnetic_declination,
+        #     'magnetic_intensity': magnetic_intensity,
+        #     'top': top,
+        #     'bottom': bottom
+        # }
 
-        all_shapes.append(shape_data)
+        # all_shapes.append(shape_data)
 
-        # Save all shapes data to JSON
-        save_json(all_shapes,filename='./cone1_shape.json')
+        # # Save all shapes data to JSON
+        # save_json(all_shapes,filename='./cone1_shape.json')
         
-        print(f"\n shapes generated, plotted, and saved.")
+        # print(f"\n shapes generated, plotted, and saved.")
 
     # else:
     #     print("invalid input, exiting...")
