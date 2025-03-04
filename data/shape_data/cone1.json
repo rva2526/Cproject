@@ -1,0 +1,24 @@
+{
+    "shapes": [
+        {
+            "name": "shape 1",
+            "x": [
+                -10.0,
+                10.0,
+                10.0,
+                -10.0
+            ],
+            "y": [
+                -10.0,
+                -10.0,
+                10.0,
+                10.0
+            ],
+            "magnetic_inclination": 45.0,
+            "magnetic_declination": 0.0,
+            "magnetic_intensity": 1.0,
+            "top": 10.0,
+            "bottom": 20.0
+        }
+    ]
+}

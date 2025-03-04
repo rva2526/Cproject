@@ -1,0 +1,25 @@
+<PAMDataset>
+  <Metadata>
+    <MDI key="NC_GLOBAL#Conventions">CF-1.7</MDI>
+    <MDI key="NC_GLOBAL#GMT_version">6.3.0 [64-bit]</MDI>
+    <MDI key="NC_GLOBAL#history">surface amargosa_50m.xyz -R543500/547000/4051000/4056000 -I25 -Gamargosa_surf.nc -V</MDI>
+    <MDI key="NC_GLOBAL#title">Data gridded with continuous surface splines in tension</MDI>
+    <MDI key="x#actual_range">{543500,547000}</MDI>
+    <MDI key="x#axis">X</MDI>
+    <MDI key="x#long_name">x</MDI>
+    <MDI key="y#actual_range">{4051000,4056000}</MDI>
+    <MDI key="y#axis">Y</MDI>
+    <MDI key="y#long_name">y</MDI>
+    <MDI key="z#actual_range">{50413.296875,50641.44921875}</MDI>
+    <MDI key="z#long_name">z</MDI>
+    <MDI key="z#_FillValue">nan</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <Metadata>
+      <MDI key="STATISTICS_MINIMUM">50413.296875</MDI>
+      <MDI key="STATISTICS_MAXIMUM">50641.44921875</MDI>
+      <MDI key="STATISTICS_MEAN">50539.724941202</MDI>
+      <MDI key="STATISTICS_STDDEV">27.802463407973</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>
