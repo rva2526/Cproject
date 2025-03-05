@@ -166,7 +166,7 @@ def main():
         centroid = poly.centroid
         center(centroid,df)
         
-        pts = pd.read_csv("/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1.csv",usecols=[0,1,2],header=0,sep='[\\s,]',names=['Easting','Northing','Mag'],engine='python')
+        pts = pd.read_csv("/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1.csv",usecols=[0,1,2],header=None,sep='[\\s,]',names=['Easting','Northing','Mag'],engine='python')
         print(pts.head())
 
         center(centroid,pts)
