@@ -72,12 +72,11 @@ int main(int argc, char *argv[]) {
     }
 
     // CALCULATE ANOMALY FOR EACH OBSERVATION
-    double px, py, anomaly;
+    double px, py
     for (int j = 0; j < num_obs; j++) {
         // For each observation, get the east and north coordinates
         py = obsmag[j].east;
         px = obsmag[j].north;
-        anomaly = 0;  // Initialize the anomaly for this observation to 0
 
         // Loop through all prisms to calculate the total anomaly for this observation
         for (int i = 0; i < num_prisms; i++) {
