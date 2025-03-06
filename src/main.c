@@ -81,13 +81,13 @@ int main(int argc, char *argv[]) {
  
     printf("\n");
     // Print results
-    for (int j = 0; j < num_obs; j++) {
-        printf("%lf %lf %lf %lf\n",
-               obsmag[j].east,
-               obsmag[j].north,
-               obsmag[j].obs_mag,
-               obsmag[j].calc_mag);
-    }
+    // for (int j = 0; j < num_obs; j++) {
+    //     printf("%lf %lf %lf %lf\n",
+    //            obsmag[j].east,
+    //            obsmag[j].north,
+    //            obsmag[j].obs_mag,
+    //            obsmag[j].calc_mag);
+    // }
 
     // Free allocated memory
     free(obsmag);
