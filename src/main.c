@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
     }
 
     // CALCULATE ANOMALY FOR EACH OBSERVATION
-    double px, py
+    double px, py;
     for (int j = 0; j < num_obs; j++) {
         // For each observation, get the east and north coordinates
         py = obsmag[j].east;
