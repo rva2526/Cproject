@@ -4,7 +4,7 @@
 double calculateVolumeIntegral(const struct Prism *prism, double px, double py) {
     double v1 = 0.0, v2 = 0.0, v3 = 0.0, v4 = 0.0, v5 = 0.0, v6 = 0.0;  //volume integrals
     double prop = 400.0 * PI; //conversion to nT (given magnetic permeability of free space))
-    printf("%lf\n",prop);
+    // printf("%lf\n",prop);
     double bx, by, bz, b_total; //components of the magnetic field and total magnetic field
     
     for (int i = 0; i < prism->num_vertices; i++) {
@@ -51,18 +51,18 @@ double calculateVolumeIntegral(const struct Prism *prism, double px, double py) 
         v4 += -s * c * f - s * s * w;
         v5 += -s * q;
         v6 += w;
-        printf("%lf %lf %lf %lf %lf %lf\n",v1,v2,v3,v4,v5,v6);
+        // printf("%lf %lf %lf %lf %lf %lf\n",v1,v2,v3,v4,v5,v6);
     }
 
     double ml = cos(prism->minc) * cos(prism->mdec);
     double mm = cos(prism->minc) * sin(prism->mdec);
     double mn = sin(prism->minc);
-    printf("%lf %lf %lf\n",ml,mm,mn);
+    // printf("%lf %lf %lf\n",ml,mm,mn);
 
     double mx = prism->mi * ml;
     double my = prism->mi * mm;
     double mz = prism->mi * mn;
-    printf("%lf %lf %lf\n",mx,my,mz);
+    // printf("%lf %lf %lf\n",mx,my,mz);
 
     
     //set earths field
@@ -78,7 +78,7 @@ double calculateVolumeIntegral(const struct Prism *prism, double px, double py) 
     bz = prop * (mx * v3 + my * v5 + mz * v6);
 
     b_total = ml*bx + mm*by + mn*bz;
-    printf("\n%lf\n",b_total);
+    printf("total field: %lf\n",b_total);
 
     return b_total;
 }
