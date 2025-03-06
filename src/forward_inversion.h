@@ -3,7 +3,6 @@
 
 #include <math.h>
 
-#define PI 3.14159
 
 
 double calculateVolumeIntegral(const struct Prism *prism, double px, double py);

@@ -65,6 +65,7 @@ struct Prism* read_json(const char *prism_content, int *num_prisms) {
     }
 
     *num_prisms = shape_size;
+    double tmp_inc=0.0,tmp_dec=0.0;
 
     for (int i = 0; i < shape_size; i++) {
         cJSON *shape = cJSON_GetArrayItem(shapes, i);
@@ -72,12 +73,14 @@ struct Prism* read_json(const char *prism_content, int *num_prisms) {
 
         cJSON *inclination = cJSON_GetObjectItemCaseSensitive(shape, "magnetic_inclination");
         if (cJSON_IsNumber(inclination)) {
-            current_prism->minc = inclination->valuedouble;
+            tmp_inc = inclination->valuedouble;
+            current_prism->minc = tmp_inc * (PI/180);
         }
 
         cJSON *declination = cJSON_GetObjectItemCaseSensitive(shape, "magnetic_declination");
         if (cJSON_IsNumber(declination)) {
-            current_prism->mdec = declination->valuedouble;
+            tmp_dec = declination->valuedouble;
+            current_prism->mdec = tmp_dec * (PI/180);
         }
 
         cJSON *intensity = cJSON_GetObjectItemCaseSensitive(shape, "magnetic_intensity");
@@ -156,9 +159,22 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
     // First pass to count the number of observations
     *num_obs = 0;
     char obsline[256];
+    char first_line[256] = {0};
+    char last_line[256] = {0};
+    
     while (fgets(obsline, sizeof(obsline), obsfile)) {
+        if (*num_obs == 0) {
+            // Store the first line
+            strncpy(first_line, obsline, sizeof(first_line));
+        }
+        // Store the last line (will be overwritten with each new line)
+        strncpy(last_line, obsline, sizeof(last_line));
         (*num_obs)++;  // Increment num_obs for each line
     }
+
+    printf("\nFirst line: %s", first_line);
+    printf("Last line: %s\n", last_line);
+
     fseek(obsfile, 0, SEEK_SET);  // Reset file pointer
 
     // Allocate memory based on num_obs
@@ -182,8 +198,51 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
         }
     }
 
-    printf("Reading success!\n");
+    printf("\nReading success!\n");
     fclose(obsfile);
     return obsmag;
 }
+
+// struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
+//     FILE *obsfile = fopen(filename, "r");
+//     if (obsfile == NULL) {
+//         fprintf(stderr, "Error opening file: %s\n", filename);
+//         return NULL;
+//     }
+
+//     printf("\nReading file...%s\n", filename);
+
+//     // First pass to count the number of observations
+//     *num_obs = 0;
+//     char obsline[256];
+//     while (fgets(obsline, sizeof(obsline), obsfile)) {
+//         (*num_obs)++;  // Increment num_obs for each line
+//     }
+//     fseek(obsfile, 0, SEEK_SET);  // Reset file pointer
+
+//     // Allocate memory based on num_obs
+//     struct ObservedMag *obsmag = malloc(*num_obs * sizeof(struct ObservedMag));
+//     if (obsmag == NULL) {
+//         fprintf(stderr, "Memory allocation failed in building observed data structure.\n");
+//         fclose(obsfile);
+//         return NULL;
+//     }
+
+//     // Second pass to fill the observed data
+//     int obs_index = 0;
+//     while (fgets(obsline, sizeof(obsline), obsfile)) {
+//         double east, north, obs_mag;
+//         if (sscanf(obsline, "%lf %lf %lf", &east, &north, &obs_mag) == 3) {
+//             obsmag[obs_index].east = east;
+//             obsmag[obs_index].north = north;
+//             obsmag[obs_index].obs_mag = obs_mag;
+//             obsmag[obs_index].calc_mag = 0;
+//             obs_index++;
+//         }
+//     }
+
+//     printf("Reading success!\n");
+//     fclose(obsfile);
+//     return obsmag;
+// }
 

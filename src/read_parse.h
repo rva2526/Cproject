@@ -8,6 +8,7 @@
 
 #define BUFFER_SIZE 256  // Define a buffer size
 #define MAX_VERTEX_NUM 100  // Define a maximum number of vertices
+#define PI 3.14159
 
 // Define the Prism data structure
 struct Prism {
