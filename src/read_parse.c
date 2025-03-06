@@ -4,16 +4,16 @@
 char *read_file(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf("Error: Unable to open the file: %s.\n", filename);
+        fprintf(stderr, "Error: Unable to open the file: %s.\n", filename);
         return NULL;
     }
 
-    printf("Reading file...%s\n", filename);
+    fprintf(stderr, "Reading file...%s\n", filename);
 
     char buffer[BUFFER_SIZE];
     char *content = malloc(1);
     if (content == NULL) {
-        printf("Memory allocation failed for file content.\n");
+        fprintf(stderr, "Memory allocation failed for file content.\n");
         fclose(file);
         return NULL;
     }
@@ -24,7 +24,7 @@ char *read_file(const char *filename) {
         size_t buffer_length = strlen(buffer);
         char *new_content = realloc(content, current_length + buffer_length + 1);
         if (new_content == NULL) {
-            printf("Memory allocation failed during file read.\n");
+            fprintf(stderr, "Memory allocation failed during file read.\n");
             free(content);  // Free previously allocated memory
             fclose(file);
             return NULL;
@@ -44,14 +44,14 @@ struct Prism* read_json(const char *prism_content, int *num_prisms) {
     if (json == NULL) {
         const char *error_ptr = cJSON_GetErrorPtr();
         if (error_ptr != NULL) {
-            printf("Error parsing JSON: %s\n", error_ptr);
+            fprintf(stderr, "Error parsing JSON: %s\n", error_ptr);
         }
         return NULL;
     }
 
     cJSON *shapes = cJSON_GetObjectItemCaseSensitive(json, "shapes");
     if (!cJSON_IsArray(shapes)) {
-        printf("Error: No shapes array found in the JSON.\n");
+        fprintf(stderr, "Error: No shapes array found in the JSON.\n");
         cJSON_Delete(json);
         return NULL;
     }
@@ -59,13 +59,13 @@ struct Prism* read_json(const char *prism_content, int *num_prisms) {
     int shape_size = cJSON_GetArraySize(shapes);
     struct Prism *prisms = malloc(shape_size * sizeof(struct Prism));  
     if (prisms == NULL) {
-        printf("Memory allocation for prisms failed.\n");
+        fprintf(stderr, "Memory allocation for prisms failed.\n");
         cJSON_Delete(json);
         return NULL;
     }
 
     *num_prisms = shape_size;
-    double tmp_inc=0.0,tmp_dec=0.0;
+    double tmp_inc = 0.0, tmp_dec = 0.0;
 
     for (int i = 0; i < shape_size; i++) {
         cJSON *shape = cJSON_GetArrayItem(shapes, i);
@@ -74,13 +74,13 @@ struct Prism* read_json(const char *prism_content, int *num_prisms) {
         cJSON *inclination = cJSON_GetObjectItemCaseSensitive(shape, "magnetic_inclination");
         if (cJSON_IsNumber(inclination)) {
             tmp_inc = inclination->valuedouble;
-            current_prism->minc = tmp_inc * (PI/180);
+            current_prism->minc = tmp_inc * (PI / 180);
         }
 
         cJSON *declination = cJSON_GetObjectItemCaseSensitive(shape, "magnetic_declination");
         if (cJSON_IsNumber(declination)) {
             tmp_dec = declination->valuedouble;
-            current_prism->mdec = tmp_dec * (PI/180);
+            current_prism->mdec = tmp_dec * (PI / 180);
         }
 
         cJSON *intensity = cJSON_GetObjectItemCaseSensitive(shape, "magnetic_intensity");
@@ -154,7 +154,7 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
         return NULL;
     }
 
-    printf("\nReading file...%s\n", filename);
+    fprintf(stderr, "\nReading file...%s\n", filename);
 
     // First pass to count the number of observations
     *num_obs = 0;
@@ -172,8 +172,8 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
         (*num_obs)++;  // Increment num_obs for each line
     }
 
-    printf("\nFirst line: %s", first_line);
-    printf("Last line: %s\n", last_line);
+    fprintf(stderr, "\nFirst line: %s", first_line);
+    fprintf(stderr, "Last line: %s\n", last_line);
 
     fseek(obsfile, 0, SEEK_SET);  // Reset file pointer
 
@@ -199,7 +199,7 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
         }
     }
 
-    printf("\nReading success!\n");
+    fprintf(stderr, "\nReading success!\n");
     fclose(obsfile);
     return obsmag;
 }

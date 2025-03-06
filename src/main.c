@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("\nTotal Prisms Found: %d\n", num_prisms);
+    fprintf(stderr, "\nTotal Prisms Found: %d\n", num_prisms);
 
     // Ensure prisms have clockwise orientation
     for (int i = 0; i < num_prisms; i++) {
@@ -62,16 +62,16 @@ int main(int argc, char *argv[]) {
     // Print prism details
     for (int i = 0; i < num_prisms; i++) {
         struct Prism *prism = &prisms[i];
-        printf("\nPrism %d:\n", i + 1);
-        printf("Magnetic Inclination: %.2f\n", prism->minc);
-        printf("Magnetic Declination: %.2f\n", prism->mdec);
-        printf("Magnetic Intensity: %.2f\n", prism->mi);
-        printf("Top Depth: %.2f\n", prism->z1);
-        printf("Bottom Depth: %.2f\n", prism->z2);
+        fprintf(stderr, "\nPrism %d:\n", i + 1);
+        fprintf(stderr, "Magnetic Inclination: %.2f\n", prism->minc);
+        fprintf(stderr, "Magnetic Declination: %.2f\n", prism->mdec);
+        fprintf(stderr, "Magnetic Intensity: %.2f\n", prism->mi);
+        fprintf(stderr, "Top Depth: %.2f\n", prism->z1);
+        fprintf(stderr, "Bottom Depth: %.2f\n", prism->z2);
 
-        printf("Vertices:\n");
+        fprintf(stderr, "Vertices:\n");
         for (int j = 0; j < prism->num_vertices; j++) {
-            printf("Vertex %d: North = %.2f, East = %.2f\n", j + 1, prism->vertex[j].north, prism->vertex[j].east);
+            fprintf(stderr, "Vertex %d: North = %.2f, East = %.2f\n", j + 1, prism->vertex[j].north, prism->vertex[j].east);
         }
     }
 
@@ -92,7 +92,9 @@ int main(int argc, char *argv[]) {
     }
  
     double rmse = calculateRMSE(obsmag, num_obs);
-    printf("RMSE: %lf\n",rmse);
+    fprintf(stderr, "\nRMSE: %lf\n", rmse);
+    fprintf(stderr, "\n");
+
 
     // Print results
     for (int j = 0; j < num_obs; j++) {
@@ -104,10 +106,6 @@ int main(int argc, char *argv[]) {
                obsmag[j].residuals);
 
     }
-
-    // Free allocated memory
-    // free(residuals);
-
 
     // Free allocated memory
     free(obsmag);
