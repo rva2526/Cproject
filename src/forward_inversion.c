@@ -63,21 +63,12 @@ double calculateVolumeIntegral(const struct Prism *prism, double px, double py) 
     double my = prism->mi * mm;
     double mz = prism->mi * mn;
     // printf("%lf %lf %lf\n",mx,my,mz);
-
-    
-    //set earths field
-    double einc = 62*(PI/180);
-    double edec = 12*(PI/180);
-
-    double el = cos(einc) * cos(edec);
-    double em = cos(einc) * sin(edec);
-    double en = sin(einc);
    
     bx = prop * (mx * v1 + my * v2 + mz * v3);
     by = prop * (mx * v2 + my * v4 + mz * v5);
     bz = prop * (mx * v3 + my * v5 + mz * v6);
 
-    b_total = el*bx + em*by + en*bz;
+    b_total = ml*bx + mm*by + mn*bz;
     
     // printf("total field: %lf\n",b_total);
 

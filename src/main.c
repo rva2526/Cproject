@@ -3,15 +3,15 @@
 #include "read_parse.h"
 #include "forward_inversion.h"
 
-double calculateRMSE (struct ObservedMag *obsmag, int num_obs){
-    double sum_residuals = 0.0;
+// double calculateRMSE (struct ObservedMag *obsmag, int num_obs){
+//     double sum_residuals = 0.0;
 
-    for (int i = 0; i < num_obs; i++) {
-        sum_residuals += obsmag[i].residuals * obsmag[i].residuals; // Square the residual and add to sum
-    }
+//     for (int i = 0; i < num_obs; i++) {
+//         sum_residuals += obsmag[i].residuals * obsmag[i].residuals; // Square the residual and add to sum
+//     }
     
-    return sqrt(sum_residuals / num_obs);
-}
+//     return sqrt(sum_residuals / num_obs);
+// }
 
 
 int main(int argc, char *argv[]) {
@@ -84,16 +84,18 @@ int main(int argc, char *argv[]) {
     	anomaly = 0;
     for(int i = 0; i<num_prisms; i++){
             struct Prism currentPrism = prisms[i];
-            anomaly += calculateVolumeIntegral(&currentPrism, px, py);
-            obsmag[j].calc_mag = anomaly;
+
+            obsmag[j].calc_mag  += calculateVolumeIntegral(&currentPrism, px, py);
+
+            obsmag[j].residuals = obsmag[j].obs_mag - obsmag[j].calc_mag; // Residual = Observed - Calculated
+
          }
 
-        obsmag[j].residuals = obsmag[j].obs_mag - obsmag[j].calc_mag; // Residual = Observed - Calculated
     }
  
-    double rmse = calculateRMSE(obsmag, num_obs);
-    fprintf(stderr, "\nRMSE: %lf\n", rmse);
-    fprintf(stderr, "\n");
+    // double rmse = calculateRMSE(obsmag, num_obs);
+    // fprintf(stderr, "\nRMSE: %lf\n", rmse);
+    // fprintf(stderr, "\n");
 
 
     // Print results
