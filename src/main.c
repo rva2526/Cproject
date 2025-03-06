@@ -66,17 +66,20 @@ int main(int argc, char *argv[]) {
 
     // CALCULATING ANOMALY
     double px, py, anomaly;
-    for (int j = 0; j < num_obs; j++) {
-        py = obsmag[j].east;
-        px = obsmag[j].north;
-        anomaly = 0;
-        for (int i = 0; i < num_prisms; i++) {
+    for (int j=0; j<num_obs; j++) {
+    	
+    	py = obsmag[j].east;
+    	px = obsmag[j].north;
+    	anomaly = 0;
+    for(int i = 0; i<num_prisms; i++){
             struct Prism currentPrism = prisms[i];
             anomaly += calculateVolumeIntegral(&currentPrism, px, py);
+         }
+            // printf("%lf %lf %lf\n", py, px, anomaly);
+       
         }
-        obsmag[j].calc_mag = anomaly;
-    }
-
+ 
+    printf("\n");
     // Print results
     for (int j = 0; j < num_obs; j++) {
         printf("%lf %lf %lf %lf\n",

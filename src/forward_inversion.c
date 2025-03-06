@@ -50,7 +50,7 @@ double calculateVolumeIntegral(const struct Prism *prism, double px, double py) 
         v4 += -s * c * f - s * s * w;
         v5 += -s * q;
         v6 += w;
-
+        // printf("%lf %lf %lf %lf %lf %lf\n",v1,v2,v3,v4,v5,v6);
     }
 
     double ml = cos(prism->minc) * cos(prism->mdec);
