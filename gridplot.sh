@@ -1,6 +1,7 @@
 
 
 point_data=/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1.csv
+out_txt=/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1.txt
 grid_data=/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1_50m.csv
 grid_surface=/home/jovyan/Cproject/data/observed_data/surface_anom_a_cone_1.nc
 
@@ -11,6 +12,9 @@ image_out=/home/jovyan/Cproject/plots/observed_plot
 R=$(gmt gmtinfo ${point_data} -I-)
 # echo ${R}
 
+if [ ! -f $out_txt ]; then
+    awk -v OFS=' ' '{gsub(/,/,OFS); gsub(/^\\s+|\\s+$/,""); print}' ${point_data} > ${out_txt}
+fi
 
 if [ ! -f $grid_surface ]; then
     gmt blockmedian ${point_data} ${R}  -I50 -V > ${grid_data}
