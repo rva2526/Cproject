@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     char *prismfile_name = argv[2];
 
     // DOING OBS STUFF
-    int num_obs;
+    int num_obs = 0;  // Initialize num_obs to 0
     struct ObservedMag *obsmag = read_observed_data(obsfile_name, &num_obs);
 
     if (obsmag == NULL) {

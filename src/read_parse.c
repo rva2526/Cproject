@@ -153,26 +153,15 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
 
     printf("\nReading file...%s\n", filename);
 
+    // First pass to count the number of observations
     *num_obs = 0;
     char obsline[256];
-    double prev_n = -9999.000;
-    double curr_n;
-
     while (fgets(obsline, sizeof(obsline), obsfile)) {
-        double east, north, obs_mag;
-        if (sscanf(obsline, "%lf %lf %lf", &east, &north, &obs_mag) == 3) {
-            curr_n = north;
-            if (curr_n < prev_n) {
-                printf("Problem: Current north value is less than the previous one. Previous: %lf, Current: %lf\n", prev_n, curr_n);
-                fclose(obsfile);
-                return NULL;
-            }
-            prev_n = curr_n;
-            (*num_obs)++;
-        }
+        (*num_obs)++;  // Increment num_obs for each line
     }
-    fseek(obsfile, 0, SEEK_SET);
+    fseek(obsfile, 0, SEEK_SET);  // Reset file pointer
 
+    // Allocate memory based on num_obs
     struct ObservedMag *obsmag = malloc(*num_obs * sizeof(struct ObservedMag));
     if (obsmag == NULL) {
         fprintf(stderr, "Memory allocation failed in building observed data structure.\n");
@@ -180,6 +169,7 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
         return NULL;
     }
 
+    // Second pass to fill the observed data
     int obs_index = 0;
     while (fgets(obsline, sizeof(obsline), obsfile)) {
         double east, north, obs_mag;
@@ -196,3 +186,4 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
     fclose(obsfile);
     return obsmag;
 }
+
