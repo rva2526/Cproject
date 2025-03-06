@@ -65,26 +65,26 @@ int main(int argc, char *argv[]) {
     }
 
     // CALCULATING ANOMALY
-    // double px, py, anomaly;
-    // for (int j = 0; j < num_obs; j++) {
-    //     py = obsmag[j].east;
-    //     px = obsmag[j].north;
-    //     anomaly = 0;
-    //     for (int i = 0; i < num_prisms; i++) {
-    //         struct Prism currentPrism = prisms[i];
-    //         anomaly += calculateVolumeIntegral(&currentPrism, px, py);
-    //     }
-    //     obsmag[j].calc_mag = anomaly;
-    // }
+    double px, py, anomaly;
+    for (int j = 0; j < num_obs; j++) {
+        py = obsmag[j].east;
+        px = obsmag[j].north;
+        anomaly = 0;
+        for (int i = 0; i < num_prisms; i++) {
+            struct Prism currentPrism = prisms[i];
+            anomaly += calculateVolumeIntegral(&currentPrism, px, py);
+        }
+        obsmag[j].calc_mag = anomaly;
+    }
 
-    // // Print results
-    // for (int j = 0; j < num_obs; j++) {
-    //     printf("%lf %lf %lf %lf\n",
-    //            obsmag[j].east,
-    //            obsmag[j].north,
-    //            obsmag[j].obs_mag,
-    //            obsmag[j].calc_mag);
-    // }
+    // Print results
+    for (int j = 0; j < num_obs; j++) {
+        printf("%lf %lf %lf %lf\n",
+               obsmag[j].east,
+               obsmag[j].north,
+               obsmag[j].obs_mag,
+               obsmag[j].calc_mag);
+    }
 
     // Free allocated memory
     free(obsmag);
