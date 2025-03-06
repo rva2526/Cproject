@@ -31,6 +31,7 @@ struct ObservedMag {
     double north;     // northing of observation point
     double obs_mag;   // magnetic value (nT) at observation point)
     double calc_mag;
+    double residuals;
 };
 
 char *read_file(const char *filename);

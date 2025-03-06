@@ -194,6 +194,7 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
             obsmag[obs_index].north = north;
             obsmag[obs_index].obs_mag = obs_mag;
             obsmag[obs_index].calc_mag = 0;
+            obsmag[obs_index].residuals = 0;
             obs_index++;
         }
     }

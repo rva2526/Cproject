@@ -79,7 +79,7 @@ double calculateVolumeIntegral(const struct Prism *prism, double px, double py) 
 
     b_total = el*bx + em*by + en*bz;
     
-    printf("total field: %lf\n",b_total);
+    // printf("total field: %lf\n",b_total);
 
     return b_total;
 }

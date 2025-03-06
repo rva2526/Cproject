@@ -3,6 +3,17 @@
 #include "read_parse.h"
 #include "forward_inversion.h"
 
+double calculateRMSE (struct ObservedMag *obsmag, int num_obs){
+    double sum_residuals = 0.0;
+
+    for (int i = 0; i < num_obs; i++) {
+        sum_residuals += obsmag[i].residuals * obsmag[i].residuals; // Square the residual and add to sum
+    }
+    
+    return sqrt(sum_residuals / num_obs);
+}
+
+
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <observed_file> <prism_json_file>\n", argv[0]);
@@ -74,22 +85,29 @@ int main(int argc, char *argv[]) {
     for(int i = 0; i<num_prisms; i++){
             struct Prism currentPrism = prisms[i];
             anomaly += calculateVolumeIntegral(&currentPrism, px, py);
-            printf("%lf",anomaly);
             obsmag[j].calc_mag = anomaly;
          }
-            // printf("%lf %lf %lf\n", py, px, anomaly);
-       
-        }
+
+        obsmag[j].residuals = obsmag[j].obs_mag - obsmag[j].calc_mag; // Residual = Observed - Calculated
+    }
  
-    printf("\n");
+    double rmse = calculateRMSE(obsmag, num_obs);
+    printf("RMSE: %lf\n",rmse);
+
     // Print results
     for (int j = 0; j < num_obs; j++) {
-        printf("%lf %lf %lf %lf\n",
+        printf("%lf %lf %lf %lf %lf\n",
                obsmag[j].east,
                obsmag[j].north,
                obsmag[j].obs_mag,
-               obsmag[j].calc_mag);
+               obsmag[j].calc_mag,
+               obsmag[j].residuals);
+
     }
+
+    // Free allocated memory
+    // free(residuals);
+
 
     // Free allocated memory
     free(obsmag);
