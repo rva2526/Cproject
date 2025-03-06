@@ -3,17 +3,6 @@
 #include "read_parse.h"
 #include "forward_inversion.h"
 
-double calculateRMSE (struct ObservedMag *obsmag, int num_obs){
-    double sum_residuals = 0.0;
-
-    for (int i = 0; i < num_obs; i++) {
-        sum_residuals += obsmag[i].residuals * obsmag[i].residuals; // Square the residual and add to sum
-    }
-    
-    return sqrt(sum_residuals / num_obs);
-}
-
-
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <observed_file> <prism_json_file>\n", argv[0]);
