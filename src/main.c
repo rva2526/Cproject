@@ -107,7 +107,10 @@ int main(int argc, char *argv[]) {
 
     // FREE ALLOCATED MEMORY FOR OBSERVED DATA AND PRISM DATA
     free(obsmag);  // Free memory allocated for observed data
+    obsmag = NULL;  // Prevent access to freed memory
+
     free(prisms);  // Free memory allocated for prism data
+    prisms = NULL;  // Prevent access to freed memory
 
     return 0;  // Return 0 indicating successful execution
 }
