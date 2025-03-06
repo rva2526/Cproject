@@ -1,1 +1,0 @@
-needed to run this after installing cJSON: export LD_LIBRARY_PATH=/home/jovyan/lib:$LD_LIBRARY_PATH

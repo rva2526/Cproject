@@ -53,13 +53,13 @@ double calculateVolumeIntegral(const struct Prism *prism, double px, double py) 
 
     }
 
-    double minc_rad,mdec_rad;
-    minc_rad = prism->minc*(PI/180);
-    mdec_rad = prism->mdec*(PI/180);
+    // double minc_rad,mdec_rad;
+    // minc_rad = prism->minc*(PI/180);
+    // mdec_rad = prism->mdec*(PI/180);
 
-    double ml = cos(minc_rad) * cos(mdec_rad);
-    double mm = cos(minc_rad) * sin(mdec_rad);
-    double mn = sin(minc_rad);
+    double ml = cos(prism->minc) * cos(prism->mdec);
+    double mm = cos(prism->minc) * sin(prism->mdec);
+    double mn = sin(prism->minc);
 
 
     double mx = prism->mi * ml;
