@@ -5,24 +5,6 @@ import os
 import pandas as pd
 from shapely.geometry import Polygon, Point
 
-
-def center(center: Point, df: pd.DataFrame) -> None:
-
-    df['E_centered'] = df.Easting - center.x
-    df['N_centered'] = df.Northing - center.y
-    print(df.head())
-
-def plot_line_and_polygon(shape: pd.DataFrame, points: pd.DataFrame = None) -> None:
-    fig, ax = plt.subplots(figsize=(5,7))
-    if points is not None:
-        ax.plot(points.E_centered,points.N_centered,color='red',markersize=3,label='Observed Data')
-        
-    ax.plot(shape.E_centered,shape.N_centered,linestyle='dashed',color='black',label='Magnetic Body')
-    ax.scatter(shape.E_centered,shape.N_centered,color='blue',label='Verticies')
-    ax.scatter(0,0,color='black',marker='*',s=50)
-    ax.legend(loc='upper right')
-    plt.savefig('./shape.png')
-
 def generate_coordinates(vertices_number:int, width:int|float, height:int|float, center_x:int=0, center_y:int=0) -> list[float]:
     """Generate coordinates for a polygon with user-defined parameters."""
     
@@ -101,113 +83,56 @@ def save_json(all_shapes, filename="./data/shape_data.json"):
 
 def main():
 
-    # csv = input("Do you have a csv file with shape verticies?: (yY/nN)")
-
-    # if csv == 'n' or csv == 'N':
-    #     print("Welcome to the Multiple Shape Generator!")
-        
-    #     # Get user input for the number of shapes
-    #     num_shapes = int(input("How many shapes would you like to generate? "))
-        
-    #     all_shapes = []  # List to hold all shape data
-
-    #     # Loop to generate multiple shapes
-    #     for i in range(num_shapes):
-    #         print(f"\nGenerating shape {i + 1}...")
-            
-    #         # Get user input for each shape's parameters
-    #         vertices_number = int(input("Enter the number of vertices (minimum 4): "))
-    #         width = float(input("Enter the width of the shape: "))
-    #         height = float(input("Enter the height of the shape: "))
-    #         center_x = float(input("Enter the center x-coordinate: "))
-    #         center_y = float(input("Enter the center y-coordinate: "))
-            
-    #         # Additional magnetic parameters
-    #         magnetic_inclination = float(input("Enter the magnetic inclination (degrees): "))
-    #         magnetic_declination = float(input("Enter the magnetic declination (degrees): "))
-    #         magnetic_intensity = float(input("Enter the magnetic intensity (amps/m): "))
-    #         top = float(input("Enter the top value (meters from surface, down is positive): "))
-    #         bottom = float(input("Enter the bottom value (meters from surface, down is positive): "))
-    #         print('\n')
-            
-    #         # Generate shape coordinates
-    #         coordinates = generate_coordinates(vertices_number, width, height, center_x, center_y)
-    #         # Add the coordinates and parameters to the all_shapes list
-    #         shape_data = {
-    #             'name': f"shape {i + 1}",
-    #             'x': [coord[0] for coord in coordinates],
-    #             'y': [coord[1] for coord in coordinates],
-    #             'magnetic_inclination': magnetic_inclination,
-    #             'magnetic_declination': magnetic_declination,
-    #             'magnetic_intensity': magnetic_intensity,
-    #             'top': top,
-    #             'bottom': bottom
-    #         }
-    #         all_shapes.append(shape_data)
-        
-    #     # Plot all shapes together
-    #     plot_shapes_together(all_shapes)
-
-    #     # Save all shapes data to JSON
-    #     save_json(all_shapes)
-        
-    #     print(f"\n{num_shapes} shapes generated, plotted, and saved.")
+    print("Welcome to the Multiple Shape Generator!")
     
-    # elif csv == 'Y' or csv == 'y':
+    # Get user input for the number of shapes
+    num_shapes = int(input("How many shapes would you like to generate? "))
+    
+    all_shapes = []  # List to hold all shape data
 
-        # filepath = input("Ok, input the csv file path: (assuming x,y are the first two columns) ")
-
-        df = pd.read_csv('data/shape_data/anom_a_cone_1.csv',skiprows=1,usecols=[0,1],sep='[\\s,]',names=['Easting','Northing'],engine='python')
-        print('\nFile head: \n',df.head())
-
-
-        coords = list(map(tuple, np.asarray(df)))
-        poly = Polygon(coords)
-        centroid = poly.centroid
-        center(centroid,df)
+    # Loop to generate multiple shapes
+    for i in range(num_shapes):
+        print(f"\nGenerating shape {i + 1}...")
         
-        pts = pd.read_csv("/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1.csv",usecols=[0,1,2],header=None,sep='[\\s,]',names=['Easting','Northing','Mag'],engine='python')
-        print(pts.head())
-
-        center(centroid,pts)
-
-        plot_line_and_polygon(shape=df,points=pts)
-        print("\nShape centered and plotted")
-
-        vertices_number = df.index.max()+1
-
-        # print("\nGenerate the rest of the paramaters needed: \n")
-        # magnetic_inclination = float(input("Enter the magnetic inclination (degrees): "))
-        # magnetic_declination = float(input("Enter the magnetic declination (degrees): "))
-        # magnetic_intensity = float(input("Enter the magnetic intensity (amps/m): "))
-        # top = float(input("Enter the top value (meters from surface, down is positive): "))
-        # bottom = float(input("Enter the bottom value (meters from surface, down is positive): "))
-        # print('\n')
-
-        # all_shapes = []  # List to hold all shape data
-
-        # #assuming single shape
-        # shape_data = {
-        #     'name': f"shape 1",
-        #     'x': df.E_centered.to_list(),
-        #     'y': df.N_centered.to_list(),
-        #     'magnetic_inclination': magnetic_inclination,
-        #     'magnetic_declination': magnetic_declination,
-        #     'magnetic_intensity': magnetic_intensity,
-        #     'top': top,
-        #     'bottom': bottom
-        # }
-
-        # all_shapes.append(shape_data)
-
-        # # Save all shapes data to JSON
-        # save_json(all_shapes,filename='./cone1_shape.json')
+        # Get user input for each shape's parameters
+        vertices_number = int(input("Enter the number of vertices (minimum 4): "))
+        width = float(input("Enter the width of the shape: "))
+        height = float(input("Enter the height of the shape: "))
+        center_x = float(input("Enter the center x-coordinate: "))
+        center_y = float(input("Enter the center y-coordinate: "))
         
-        # print(f"\n shapes generated, plotted, and saved.")
+        # Additional magnetic parameters
+        magnetic_inclination = float(input("Enter the magnetic inclination (degrees): "))
+        magnetic_declination = float(input("Enter the magnetic declination (degrees): "))
+        magnetic_intensity = float(input("Enter the magnetic intensity (amps/m): "))
+        top = float(input("Enter the top value (meters from surface, down is positive): "))
+        bottom = float(input("Enter the bottom value (meters from surface, down is positive): "))
+        print('\n')
+        
+        # Generate shape coordinates
+        coordinates = generate_coordinates(vertices_number, width, height, center_x, center_y)
+        # Add the coordinates and parameters to the all_shapes list
+        shape_data = {
+            'name': f"shape {i + 1}",
+            'x': [coord[0] for coord in coordinates],
+            'y': [coord[1] for coord in coordinates],
+            'magnetic_inclination': magnetic_inclination,
+            'magnetic_declination': magnetic_declination,
+            'magnetic_intensity': magnetic_intensity,
+            'top': top,
+            'bottom': bottom
+        }
+        all_shapes.append(shape_data)
+    
+    # Plot all shapes together
+    plot_shapes_together(all_shapes)
 
-    # else:
-    #     print("invalid input, exiting...")
-    #     exit(1)
+    # Save all shapes data to JSON
+    save_json(all_shapes)
+    
+    print(f"\n{num_shapes} shapes generated, plotted, and saved.")
+    
+
 
 
 if __name__ == "__main__":
