@@ -18,3 +18,11 @@
 
 ## Running plouf
 ### using test directory
+
+Run: 
+> ./plouf ./test/example_line.txt ./test/shape_data.json > ./test/example_plouf_result.txt
+>
+
+Check data:
+> check_test_dir_results.ipynb
+>
