@@ -5,7 +5,7 @@ out_txt=/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1.txt
 grid_data=/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1_50m.csv
 grid_surface=/home/jovyan/Cproject/data/observed_data/surface_anom_a_cone_1.nc
 
-color=/home/jovyan/Cproject/data/color.cpt
+color=/home/jovyan/Cproject/src/gmt/color.cpt
 
 image_out=/home/jovyan/Cproject/plots/observed_plot
 
