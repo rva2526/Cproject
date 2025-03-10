@@ -162,7 +162,7 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
     
     // Print the first and last lines to verify the data was read in
     if (fgets(obsline, sizeof(obsline), obsfile)) {
-        printf("\nFirst line: %s", obsline);  // Print the first line
+        fprintf(stderr,"\nFirst line: %s", obsline);  // Print the first line
         (*num_obs)++;  // Increment num_obs for the first line
 
         // Keep reading until the last line
@@ -172,7 +172,7 @@ struct ObservedMag *read_observed_data(const char *filename, int *num_obs) {
             (*num_obs)++;  // Increment num_obs for each additional line
         }
 
-        printf("Last line: %s\n", last_line);  // Print the last line
+        fprintf(stderr,"Last line: %s\n", last_line);  // Print the last line
     }
 
     fseek(obsfile, 0, SEEK_SET);  // Reset file pointer

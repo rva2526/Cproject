@@ -112,5 +112,6 @@ int main(int argc, char *argv[]) {
     free(prisms);  // Free memory allocated for prism data
     prisms = NULL;  // Prevent access to freed memory
 
+    fprintf(stderr,"Outfile Columns: ['X','Y','Obsereved_Mag','Calculated_Mag','Residuals']\n");
     return 0;  // Return 0 indicating successful execution
 }
