@@ -30,7 +30,7 @@
             ],
             "magnetic_inclination": -67,
             "magnetic_declination": 177.0,
-            "magnetic_intensity": 0.5,
+            "magnetic_intensity": 1,
             "top": 40.0,
             "bottom": 50.0
         }

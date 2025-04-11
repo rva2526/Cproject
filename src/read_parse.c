@@ -25,7 +25,7 @@ char *read_file(const char *filename) {
         char *new_content = realloc(content, current_length + buffer_length + 1);
         if (new_content == NULL) {
             fprintf(stderr, "Memory allocation failed during file read.\n");
-            free(content);  // Free previously allocated memory
+            free(content); 
             fclose(file);
             return NULL;
         }

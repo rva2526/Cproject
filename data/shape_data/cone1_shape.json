@@ -34,11 +34,11 @@
                 4054987.54620151,
                 4055005.74016703
             ],
-            "magnetic_inclination": -67,
-            "magnetic_declination": 177,
-            "magnetic_intensity": 1,
-            "top": 10,
-            "bottom": 50
+            "magnetic_inclination": -47,
+            "magnetic_declination": 180,
+            "magnetic_intensity": 20,
+            "top": 50,
+            "bottom": 150
         }
     ]
 }

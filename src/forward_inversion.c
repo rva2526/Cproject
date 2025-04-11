@@ -1,5 +1,6 @@
 #include "read_parse.h"
 #include "forward_inversion.h"
+#include <math.h>
 
 double calculateVolumeIntegral(const struct Prism *prism, double px, double py) {
     double v1 = 0.0, v2 = 0.0, v3 = 0.0, v4 = 0.0, v5 = 0.0, v6 = 0.0;  //volume integrals
@@ -79,8 +80,76 @@ double calculateRMSE (struct ObservedMag *obsmag, int num_obs){
     double sum_residuals = 0.0;
 
     for (int i = 0; i < num_obs; i++) {
-        sum_residuals += obsmag[i].residuals * obsmag[i].residuals; // Square the residual and add to sum
+        sum_residuals += obsmag[i].residuals * obsmag[i].residuals;
     }
     
     return sqrt(sum_residuals / num_obs);
+}
+
+// Invert magnetization intensity using Golden Section Search
+double golden_search_magnetization(struct ObservedMag *obsmag, struct Prism *prism, int num_obs, double tol) {
+    // Golden ratio constant used for interval reduction
+    const double phi = (1.0 + sqrt(5.0)) / 2.0;
+
+    // Set the search range for magnetization intensity (A/m)
+    double mi_low = 0.0;       // Minimum test value
+    double mi_high = 50.0;     // Maximum test value — adjust based on expected geology
+
+    // Initialize two interior points within the interval based on golden ratio
+    double mi1 = mi_high - (mi_high - mi_low) / phi;
+    double mi2 = mi_low + (mi_high - mi_low) / phi;
+
+    // Iterate until the interval is smaller than the tolerance (precision goal)
+    while (fabs(mi_high - mi_low) > tol) {
+        // ----------------------------
+        // Evaluate RMSE at test point mi1
+        // ----------------------------
+        prism->mi = mi1; // Set test magnetization
+        for (int i = 0; i < num_obs; i++) {
+            // Forward model: compute predicted magnetic field at each observation point
+            obsmag[i].calc_mag = calculateVolumeIntegral(prism, obsmag[i].north, obsmag[i].east);
+            // Residual = observed - predicted
+            obsmag[i].residuals = obsmag[i].obs_mag - obsmag[i].calc_mag;
+        }
+        double rmse1 = calculateRMSE(obsmag, num_obs); // Calculate RMSE for mi1
+
+        // ----------------------------
+        // Evaluate RMSE at test point mi2
+        // ----------------------------
+        prism->mi = mi2; // Set test magnetization
+        for (int i = 0; i < num_obs; i++) {
+            // Forward model again
+            obsmag[i].calc_mag = calculateVolumeIntegral(prism, obsmag[i].north, obsmag[i].east);
+            obsmag[i].residuals = obsmag[i].obs_mag - obsmag[i].calc_mag;
+        }
+        double rmse2 = calculateRMSE(obsmag, num_obs); // Calculate RMSE for mi2
+
+        // ----------------------------
+        // Compare RMSE values and shrink the interval accordingly
+        // ----------------------------
+        if (rmse1 < rmse2) {
+            // mi1 gave a better fit → keep the lower half
+            mi_high = mi2;
+            mi2 = mi1;
+            mi1 = mi_high - (mi_high - mi_low) / phi;
+        } else {
+            // mi2 gave a better fit → keep the upper half
+            mi_low = mi1;
+            mi1 = mi2;
+            mi2 = mi_low + (mi_high - mi_low) / phi;
+        }
+    }
+
+    // Final best-fit magnetization is the midpoint of the last interval
+    double best_mi = (mi_low + mi_high) / 2.0;
+    prism->mi = best_mi; // Set prism magnetization to best-fit value
+
+    // Optional: update predicted field and residuals one last time
+    for (int i = 0; i < num_obs; i++) {
+        obsmag[i].calc_mag = calculateVolumeIntegral(prism, obsmag[i].north, obsmag[i].east);
+        obsmag[i].residuals = obsmag[i].obs_mag - obsmag[i].calc_mag;
+    }
+
+    // Print result and return it
+    return best_mi;
 }

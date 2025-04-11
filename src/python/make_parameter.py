@@ -82,8 +82,6 @@ def save_json(all_shapes, filename="./data/shape_data.json"):
     print('json saved to: {}\n'.format(outfile.name))
 
 def main():
-
-    print("Welcome to the Multiple Shape Generator!")
     
     # Get user input for the number of shapes
     num_shapes = int(input("How many shapes would you like to generate? "))

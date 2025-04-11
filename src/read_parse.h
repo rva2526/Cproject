@@ -30,14 +30,14 @@ struct ObservedMag {
     double east;      // easting of observation point
     double north;     // northing of observation point
     double obs_mag;   // magnetic value (nT) at observation point)
-    double calc_mag;
-    double residuals;
+    double calc_mag;  // plouff calculated values
+    double residuals; // difference between obs and calc
 };
 
-char *read_file(const char *filename);
 struct Prism *read_json(const char *prism_content, int *num_prisms);
+struct ObservedMag *read_observed_data(const char *filename, int *num_obs);
+char *read_file(const char *filename);
 double calculateSignedArea(struct Prism *prism);
 void ensureClockwise(struct Prism *prism);
-struct ObservedMag *read_observed_data(const char *filename, int *num_obs);
 
 #endif // PREAD_PARSE

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "read_parse.h"
 #include "forward_inversion.h"
 
@@ -72,28 +73,27 @@ int main(int argc, char *argv[]) {
     }
 
     // CALCULATE ANOMALY FOR EACH OBSERVATION
-    double px, py;
-    for (int j = 0; j < num_obs; j++) {
-        // For each observation, get the east and north coordinates
-        py = obsmag[j].east;
-        px = obsmag[j].north;
 
-        // Loop through all prisms to calculate the total anomaly for this observation
-        for (int i = 0; i < num_prisms; i++) {
-            struct Prism currentPrism = prisms[i];
+    // CALCULATE ANOMALY FOR EACH OBSERVATION
 
-            // Add the calculated anomaly from this prism to the total anomaly for the observation
-            obsmag[j].calc_mag += calculateVolumeIntegral(&currentPrism, px, py);
-
-            // Calculate the residual for this observation (difference between observed and calculated anomaly)
-            obsmag[j].residuals = obsmag[j].obs_mag - obsmag[j].calc_mag;  // Residual = Observed - Calculated
-        }
+    // Step 1: Optimize magnetization for each prism
+    double tol = 1e-6;
+    double optimized_mi[num_prisms];
+    for (int i = 0; i < num_prisms; i++) {
+        optimized_mi[i] = golden_search_magnetization(obsmag, &prisms[i], num_obs, tol);
+        fprintf(stderr,"\nBest-fit magnetization intensity (Prism %d): %lf A/m\n", i + 1, optimized_mi[i]);
     }
 
-    // CALCULATE AND PRINT RMSE (ROOT MEAN SQUARED ERROR) BASED ON THE RESIDUALS
-    double rmse = calculateRMSE(obsmag, num_obs);  // Calculate the RMSE for all observations based on residuals
-    fprintf(stderr, "\nRMSE: %lf\n", rmse);  // Print the calculated RMSE value
-    fprintf(stderr, "\n");
+    // Step 2: Calculate total magnetic anomaly at each observation by summing from all prisms
+    for (int j = 0; j < num_obs; j++) {
+        obsmag[j].calc_mag = 0.0;  // Reset before summing
+
+        for (int i = 0; i < num_prisms; i++) {
+            obsmag[j].calc_mag += calculateVolumeIntegral(&prisms[i], obsmag[j].north, obsmag[j].east);
+        }
+
+        obsmag[j].residuals = obsmag[j].obs_mag - obsmag[j].calc_mag;
+    }
 
     // PRINT RESULTS (Observed vs Calculated Values and Residuals)
     for (int j = 0; j < num_obs; j++) {
@@ -112,6 +112,6 @@ int main(int argc, char *argv[]) {
     free(prisms);  // Free memory allocated for prism data
     prisms = NULL;  // Prevent access to freed memory
 
-    fprintf(stderr,"Outfile Columns: ['X','Y','Obsereved_Mag','Calculated_Mag','Residuals']\n");
+    fprintf(stderr,"\nOutfile Columns: ['X','Y','Obsereved_Mag','Calculated_Mag','Residuals']\n");
     return 0;  // Return 0 indicating successful execution
 }

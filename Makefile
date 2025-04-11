@@ -22,4 +22,3 @@ read_parse.o: ./src/read_parse.c ./src/read_parse.h
 
 clean:
 	rm -f ./src/*.o
-	rm -f *.o
