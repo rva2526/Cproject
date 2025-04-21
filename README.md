@@ -51,3 +51,7 @@ Results can be plotted similar to observed using (assuming you keep the same out
 >
 
 observed and result plots are in the plots folder.
+
+At anomaly A in southern Crater Flat, 62
+meters of massive basalt was encountered
+beneath alluvium at a depth of 148 meters.

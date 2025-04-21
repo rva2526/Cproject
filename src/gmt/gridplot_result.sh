@@ -1,6 +1,6 @@
 
 
-point_data=/home/jovyan/Cproject/results/anom_a_cone1.out
+point_data=/home/jovyan/Cproject/anom_a_cone1.out
 # out_txt=/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1.txt
 grid_data=/home/jovyan/Cproject/results/anom_a_cone1_50m.out
 grid_surface=/home/jovyan/Cproject/results/result_anom_a_cone_1.nc
