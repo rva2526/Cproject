@@ -75,22 +75,22 @@ int main(int argc, char *argv[]) {
     // CALCULATE ANOMALY FOR EACH OBSERVATION
 
     // Step 1: Optimize magnetization for each prism
-    // double tol = 1e-6;
-    // double optimized_mi[num_prisms];
-    // for (int i = 0; i < num_prisms; i++) {
-    //     optimized_mi[i] = golden_search_magnetization(obsmag, &prisms[i], num_obs, tol);
-    //     fprintf(stderr,"\nBest-fit magnetization intensity (Prism %d): %lf A/m\n", i + 1, optimized_mi[i]);
-    // }
-
-
     double tol = 1e-6;
-    double best_rmse[num_prisms];
+    double optimized_mi[num_prisms];
     for (int i = 0; i < num_prisms; i++) {
-        best_rmse[i] = golden_search_z1_z2(obsmag, &prisms[i], num_obs, tol);
-        fprintf(stderr,"\nBest-fit rmse (Prism %d): %lf\n", i + 1, best_rmse[i]);
-        fprintf(stderr,"z1 %lf, z2 %lf\n", prisms[i].z1, prisms[i].z2);
-
+        optimized_mi[i] = golden_search_magnetization(obsmag, &prisms[i], num_obs, tol);
+        fprintf(stderr,"\nBest-fit magnetization intensity (Prism %d): %lf A/m\n", i + 1, optimized_mi[i]);
     }
+
+
+    // double tol = 1e-6;
+    // double best_rmse[num_prisms];
+    // for (int i = 0; i < num_prisms; i++) {
+    //     best_rmse[i] = golden_search_z1_z2(obsmag, &prisms[i], num_obs, tol);
+    //     fprintf(stderr,"\nBest-fit rmse (Prism %d): %lf\n", i + 1, best_rmse[i]);
+    //     fprintf(stderr,"z1 %lf, z2 %lf\n", prisms[i].z1, prisms[i].z2);
+
+    // }
 
     // Step 2: Calculate total magnetic anomaly at each observation by summing from all prisms
     for (int j = 0; j < num_obs; j++) {
@@ -104,20 +104,20 @@ int main(int argc, char *argv[]) {
     }
 
     // Compute min, max, and mean of residuals
-    // double min_residual = obsmag[0].residuals;
-    // double max_residual = obsmag[0].residuals;
-    // double sum_residuals = 0.0;
+    double min_residual = obsmag[0].residuals;
+    double max_residual = obsmag[0].residuals;
+    double sum_residuals = 0.0;
 
-    // for (int j = 0; j < num_obs; j++) {
-    //     double r = obsmag[j].residuals;
-    //     if (r < min_residual) min_residual = r;
-    //     if (r > max_residual) max_residual = r;
-    //     sum_residuals += r;
-    // }
+    for (int j = 0; j < num_obs; j++) {
+        double r = obsmag[j].residuals;
+        if (r < min_residual) min_residual = r;
+        if (r > max_residual) max_residual = r;
+        sum_residuals += r;
+    }
 
-    // double mean_residual = sum_residuals / num_obs;
+    double mean_residual = sum_residuals / num_obs;
 
-    // fprintf(stderr, "Residuals - Min: %f, Max: %f, Mean: %f\n", min_residual, max_residual, mean_residual);
+    fprintf(stderr, "Residuals - Min: %f, Max: %f, Mean: %f\n", min_residual, max_residual, mean_residual);
 
     // PRINT RESULTS (Observed vs Calculated Values and Residuals)
     for (int j = 0; j < num_obs; j++) {
