@@ -1,22 +1,20 @@
 
 
-point_data=/home/jovyan/Cproject/anom_a_cone1.out
+point_data=/home/jovyan/Cproject/southwest_cone_all.out
 # out_txt=/home/jovyan/Cproject/data/observed_data/points_anom_a_cone_1.txt
-grid_data=/home/jovyan/Cproject/results/anom_a_cone1_50m.out
-grid_surface=/home/jovyan/Cproject/results/result_anom_a_cone_1.nc
+grid_data=/home/jovyan/Cproject/src/gmt/southwest_cone_1_50m.grd
+grid_surface=/home/jovyan/Cproject/src/gmt/southwest_cone_1.nc
 
-color=/home/jovyan/Cproject/data/color2.cpt
+color=/home/jovyan/Cproject/src/gmt/color2.cpt
 
 image_out=/home/jovyan/Cproject/plots/calculated_plot
 
 R=$(gmt gmtinfo ${point_data} -I-)
 # echo ${R}
 
-if [ ! -f $grid_surface ]; then
-    gmt blockmedian ${point_data} ${R} -i0,1,3 -I50 -V > ${grid_data}
-    gmt surface ${grid_data} -R -I25 -G${grid_surface} -V
+gmt blockmedian ${point_data} ${R} -i0,1,3 -I50 -V > ${grid_data}
+gmt surface ${grid_data} -R -I25 -G${grid_surface} -V
 
-fi
 
 T=$(gmt grdinfo ${grid_surface} -T-)
 gmt makecpt -Chaxby -i0,1,3 ${T}/1 > ${color} -V

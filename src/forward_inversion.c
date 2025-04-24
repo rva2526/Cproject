@@ -158,8 +158,8 @@ double golden_search_magnetization(struct ObservedMag *obsmag, struct Prism *pri
 double golden_search_z1_z2(struct ObservedMag *obsmag, struct Prism *prism, int num_obs, double tol) {
     const double phi = (1.0 + sqrt(5.0)) / 2.0;  // Golden ratio
 
-    double z1_low = 40.0;
-    double z1_high = 60.0;
+    double z1_low = 00.0;
+    double z1_high = 200.0;
 
     // Best solution so far
     double best_z1 = prism->z1;
@@ -182,7 +182,7 @@ double golden_search_z1_z2(struct ObservedMag *obsmag, struct Prism *prism, int 
 
             // Set z2 search bounds: must be deeper than z1
             double z2_low = current_z1 + 1.0;
-            double z2_high = 200.0;
+            double z2_high = 300.0;
 
             // Golden section loop for z2
             while (fabs(z2_high - z2_low) > tol) {
