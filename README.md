@@ -1,6 +1,6 @@
 # README
 
-This repository holds codes written in C, python and GMT. These codes were written with the aim of creating a fast and readable optimization/inversion of magnetic anomalies following Plouff 1976 (). The inversion code is written in C with some helper functions around creating a json file which holds parameters related to the prism used for the inversion. GMT code will visualize the output data.
+This repository holds codes written in C, python and GMT. These codes were written with the aim of creating a fast and readable optimization/inversion of magnetic anomalies following Plouff 1976 (D. Plouff; Gravity and magnetic fields of polygonal prisms and application to magnetic terrain corrections. Geophysics 1976;; 41 (4): 727–741.). The inversion code is written in C with some helper functions around creating a json file which holds parameters related to the prism used for the inversion. GMT code will visualize the output data.
 
 ### Python Code
 
