@@ -15,7 +15,7 @@ def save_json(all_shapes, filename="./data/shape_data.json"):
 
     print('json saved to: {}\n'.format(outfile.name))
 
-shape = pd.read_csv('/home/jovyan/Cproject/data/shape_data/southwest_cone_lower.csv',usecols=[0,1],sep='[\\s,]',names=['Easting','Northing'],skiprows=[-1],engine='python')
+shape = pd.read_csv('/home/jovyan/Cproject/data/shape_data/southwest_cone_lower.csv',usecols=[0,1],sep='[\\s,]',names=['Easting','Northing'],header=0,skiprows=[-1],engine='python')
 print('\nFile head: \n',shape.head())
 shape.drop(shape.tail(1).index,inplace=True) # drop last n rows
 
